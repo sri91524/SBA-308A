@@ -88,12 +88,11 @@ async function GenerateCard(bFavorite = false){
         
         if (bFavorite === null  || bFavorite === "") {
             bFavorite = false; // Default to false if null
-        }        
-            console.log(bFavorite);
+        }
             
-        if(quotes && quotes.length > 0){
-            if(authorList.value !== "" && authorList.value !== "select"){
-                let sAuthor = String(authorList.value);                               
+        if(quotes && quotes.length > 0 ){
+            if(authorList.value !== "" && authorList.value !== "select" && !bFavorite){
+                let sAuthor = authorList.value;                               
                 selectedQuote = quotes.filter(quote => quote.author.replace(/ /g,"").toLowerCase() === sAuthor);                
             }   
             else{
@@ -102,13 +101,11 @@ async function GenerateCard(bFavorite = false){
 
             if(bFavorite){
                 favIds = JSON.parse(localStorage.getItem("favQuoteIds"));
-            }
-            console.log(favIds);
+            }            
     
             let strCard ="";            
             selectedQuote.forEach(item => {                               
                 if(bFavorite){
-                
                     if(favIds.includes(String(item.id))){
                         console.log(favIds);
                         strCard += `
@@ -117,7 +114,7 @@ async function GenerateCard(bFavorite = false){
                                 <div class="cardAuthor">
                                     <p id="author">${item.author}</p>
                                     <button class="favBtn" onclick="deleteFavourite('${item.id}')">
-                                        <img src="images/delete-favorite.png" width="20px">
+                                        <img src="images/delete-favorite.png" width="30px">
                                     </button>
                                 </div>
                             </div>
@@ -131,7 +128,7 @@ async function GenerateCard(bFavorite = false){
                             <div class="cardAuthor">
                                 <p id="author">${item.author}</p>
                                 <button class="favBtn" onclick="addFavourite('${item.id}')">
-                                    <img src="images/add-favorite.png" width="20px">
+                                    <img src="images/add-favorite.png" width="30px">
                                 </button>
                             </div>
                         </div>
@@ -139,7 +136,7 @@ async function GenerateCard(bFavorite = false){
                 }
             });
             
-            qContainer.innerHTML=strCard;
+            qContainer.innerHTML=strCard;         
         }
         else
         {
