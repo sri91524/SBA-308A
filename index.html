@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Axios -->
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"
+      defer
+    ></script>
+
+    <script src="./index.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@100..900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Spirax&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Favorite Quotes</title>
+  </head>
+  <body>
+    <nav>
+        <a href="javascript: void(0)" id="lnkhome">Home</a>
+        <a href="javascript: void(0)" id="lnkfavorite">My Favourites</a>
+    </nav>
+    <div class="image-container">
+      <img src="https://picsum.photos/seed/picsum/200/300" />
+      <div id="qtd" class="quote">        
+      </div>
+    </div>
+    <div class="ddlContainer">
+      <h3>Select Author:&nbsp;&nbsp;</h3>
+      <select
+        id="ddlAuthor"
+        class="ddlAuth"
+        aria-label="form-select-lg"
+      ></select>
+    </div>
+    <hr />
+    <div id="quoteContainer" class="quotes-container">  
+    </div>
+  </body>
+</html>
