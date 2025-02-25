@@ -1,5 +1,6 @@
+import {BuildHTMLCard} from "./src/helper.js";
+import {GetQuoteForDay} from "./src/quote.js"
 
-const quotetd = document.getElementById("qtd");
 const authorList = document.getElementById("ddlAuthor");
 const pQuote = document.getElementById("quote");
 const pAuthor = document.getElementById("author");
@@ -7,13 +8,14 @@ const qContainer = document.getElementById("quoteContainer");
 const linkHome = document.getElementById("lnkhome");
 const linkFavourite = document.getElementById("lnkfavorite");
 const ddlCont = document.querySelector(".ddlContainer");
-console.log(ddlCont);
+
 let isFavourite = false;
 
 linkHome.addEventListener("click",()=>{showContainer("home")});
 linkFavourite.addEventListener("click", () => {showContainer("favorite")});
 authorList.addEventListener("change",() => GenerateCard(false))
 
+//ToDo -- Based on Home or Favourite Link clicked, quotes wiil be displayed
 showContainer("home");
 
 function showContainer(containter){
@@ -34,19 +36,9 @@ function showContainer(containter){
     }
 }
 
+GetQuoteForDay();
 
-async function GetQuoteForDay() {
-    const todayDate = new Date();
-    try{      
-        const resp = await fetch("https://random-quotes-freeapi.vercel.app/api/random")
-        const quoteToday = await resp.json();
-        quotetd.textContent = `"${quoteToday.quote} - ${quoteToday.author}`;
-    }
-    catch(e){
-        console.error(e);
-    }
-}
-
+//To populate dropdownlist for authors
 async function initialLoad(){
     try{        
         const res = await fetch("https://random-quotes-freeapi.vercel.app/api/quotes");
@@ -78,18 +70,20 @@ async function initialLoad(){
     }
 }
 
-async function GenerateCard(bFavorite = false){
+//ToDo -- to display quotes 
+export async function GenerateCard(bFavorite = false){
     try{
 
         const res = await fetch("https://random-quotes-freeapi.vercel.app/api/quotes");
         const quotes = await res.json();
-        let selectedQuote ="";
-        let favIds = "";
+        let selectedQuote ="";        
         
         if (bFavorite === null  || bFavorite === "") {
             bFavorite = false; // Default to false if null
         }
-            
+        
+        //Based on author dropdown selection, quotes need to be displayed
+        //On initial load or page refresh, all quotes need to be displayed
         if(quotes && quotes.length > 0 ){
             if(authorList.value !== "" && authorList.value !== "select" && !bFavorite){
                 let sAuthor = authorList.value;                               
@@ -98,45 +92,9 @@ async function GenerateCard(bFavorite = false){
             else{
                 selectedQuote = quotes;
             }     
-
-            if(bFavorite){
-                favIds = JSON.parse(localStorage.getItem("favQuoteIds"));
-            }            
-    
-            let strCard ="";            
-            selectedQuote.forEach(item => {                               
-                if(bFavorite){
-                    if(favIds.includes(String(item.id))){
-                        console.log(favIds);
-                        strCard += `
-                            <div class="cardQuote"><p>${item.quote}</p>
-                            <hr>
-                                <div class="cardAuthor">
-                                    <p id="author">${item.author}</p>
-                                    <button class="favBtn" onclick="deleteFavourite('${item.id}')">
-                                        <img src="images/delete-favorite.png" width="30px">
-                                    </button>
-                                </div>
-                            </div>
-                        `;
-                    }
-                }
-                else{
-                    strCard += `
-                        <div class="cardQuote"><p>${item.quote}</p>
-                        <hr>
-                            <div class="cardAuthor">
-                                <p id="author">${item.author}</p>
-                                <button class="favBtn" onclick="addFavourite('${item.id}')">
-                                    <img src="images/add-favorite.png" width="30px">
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                }
-            });
             
-            qContainer.innerHTML=strCard;         
+            //Building all cards for quotes and binding to card container
+            qContainer.innerHTML = BuildHTMLCard(selectedQuote, bFavorite);;         
         }
         else
         {
@@ -146,40 +104,4 @@ async function GenerateCard(bFavorite = false){
     }catch(e){
         console.error(e);
     }
-}
-
-function deleteFavourite(favQuoteId){
-    let favQIds = JSON.parse(localStorage.getItem("favQuoteIds"))  || [];
-    const pos = favQIds.indexOf(favQuoteId);
-    if(pos != -1)
-    {
-        favQIds.splice(pos, 1);
-        localStorage.setItem("favQuoteIds",JSON.stringify(favQIds));
-        GenerateCard(true);
-    }
-}
-
-function addFavourite(favQuoteId){
-
-    try{
-        let favQIds = JSON.parse(localStorage.getItem("favQuoteIds"));
-        console.log(favQIds);
-        if(!favQIds)
-        {
-            favQIds = [];
-        }
-
-        if(!favQIds.includes(favQuoteId))
-        {
-            favQIds.push(favQuoteId);
-        }
-      
-        localStorage.setItem("favQuoteIds",JSON.stringify(favQIds));
-        window.alert("Quote has been successfully added to favourite list!!")  
-    }
-    catch(e){
-        console.error(e);
-    }
-     
-    
 }

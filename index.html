@@ -10,8 +10,11 @@
       src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"
       defer
     ></script>
+  
+    <script type="module" src="./src/quote.js" defer></script>
+    <script type="module" src="./src/helper.js" defer></script>
+    <script type="module" src="./index.js" defer></script>
 
-    <script src="./index.js" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -20,11 +23,13 @@
     />
     <title>Favorite Quotes</title>
   </head>
-  <body>
+  <header>   
     <nav>
         <a href="javascript: void(0)" id="lnkhome">Home</a>
         <a href="javascript: void(0)" id="lnkfavorite">My Favourites</a>
     </nav>
+</header>
+  <body> 
     <div class="image-container">
       <img src="https://picsum.photos/seed/picsum/200/300" />
       <div id="qtd" class="quote">        
@@ -40,6 +45,11 @@
     </div>
     <hr />
     <div id="quoteContainer" class="quotes-container">  
-    </div>
+    </div>    
   </body>
+  <br/>
+  <hr>
+  <footer>
+    <p>© 2025 - Quotesforyou.com</p>
+</footer>
 </html>
